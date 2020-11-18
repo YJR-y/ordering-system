@@ -11,6 +11,8 @@ spring:
 server:
   servlet:
     context-path: /ordering_system
+  port: 8080
+  context-path: /sell
 
 logging:
   pattern:

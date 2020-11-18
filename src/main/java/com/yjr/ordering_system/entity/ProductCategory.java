@@ -1,58 +1,50 @@
 package com.yjr.ordering_system.entity;
 
+import lombok.Data;
+import lombok.ToString;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.Date;
 
 /**
- * 类目
+ * 卖家端 类目表
  * @author yjr
  * @since 2020/10/27 17:14
  */
 @Entity
+@DynamicUpdate
+@DynamicInsert
+@Data
+@ToString
 public class ProductCategory {
-
-    //类目id
+    /**
+     * 类目id
+     */
     @Id
     @GeneratedValue
     private Integer categoryId;
 
-    //类目名字
+    /**
+     * 类目名字
+     */
     private String categoryName;
 
-    //类目编号
+    /**
+     * 类目编号
+     */
     private Integer categoryType;
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
+    public ProductCategory(String categoryName, Integer categoryType) {
         this.categoryName = categoryName;
-    }
-
-    public Integer getCategoryType() {
-        return categoryType;
-    }
-
-    public void setCategoryType(Integer categoryType) {
         this.categoryType = categoryType;
     }
 
-    @Override
-    public String toString() {
-        return "ProductCategory{" +
-                "categoryId=" + categoryId +
-                ", categoryName='" + categoryName + '\'' +
-                ", categoryType=" + categoryType +
-                '}';
+    public ProductCategory() {
     }
+
 }

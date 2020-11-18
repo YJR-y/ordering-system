@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sell</title>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <style>
+        .el-header {
+            background-color: #B3C0D1;
+            color: #333;
+            text-align: center;
+            line-height: 100px;
+        }
+
+        .el-footer {
+            background-color: #B3C0D1;
+            color: #333;
+            text-align: left;
+            line-height: 90px;
+        }
+
+        .el-main {
+            background-color: #E9EEF3;
+            color: #333;
+            text-align: center;
+            line-height: 630px;
+        }
+
+        .infinite-list .infinite-list-item {
+            display: flex;
+            height: 150px;
+            background: #e8f3fe;
+            margin: 10px;
+            color: #7dbcfc;
+        }
+
+        .demo-rate .block {
+            padding: 30px 0;
+            text-align: center;
+            border-right: 1px solid #eff2f6;
+            display: inline-block;
+            width: 49%;
+            box-sizing: border-box;
+        }
+
+        .el-rate {
+            height: 20px;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <el-container>
+        <el-header height="100">Header</el-header>
+
+        <el-main>
+            <el-tabs v-model="activeName" stretch="true" @tab-click="handleClick">
+                <el-tab-pane label="商品" name="product">
+                    <el-tabs tab-position="left">
+                        <el-tab-pane v-for="(item) in productInfo" :label="item.name">
+                            <ul class="infinite-list" style="overflow:auto">
+                                <li v-for="product in item.foods" class="infinite-list-item">
+                                    <el-image
+                                            style="width: 100px; height: 100px; margin-top: 20px; margin-left: 30px"
+                                            :src="product.icon"
+                                            fit="fill">
+                                    </el-image>
+                                    <div style="display: inline-block;text-align: center;width: 50px" id="222">111</div>
+
+                                </li>
+                            </ul>
+                        </el-tab-pane>
+                    </el-tabs>
+                    <el-footer>
+                        <i class="el-icon-shopping-cart-2" style="font-size: 50px; margin-left: 40px"></i>
+                    </el-footer>
+                </el-tab-pane>
+                <el-tab-pane label="评价" name="evaluate">
+                    <el-rate
+                            disabled
+                            show-score
+                            :text-color="evaluateColors"
+                            v-model="evaluateValue"
+                            :colors="evaluateColors">
+                    </el-rate>
+                </el-tab-pane>
+                <el-tab-pane label="商家" name="merchant">商家模块</el-tab-pane>
+            </el-tabs>
+        </el-main>
+    </el-container>
+</div>
+</body>
+<script type="text/javascript">
+    const vue = new Vue({
+        el: '#app',
+        data: {
+            activeName: "product",
+            productInfo: [],
+            evaluateValue: 3.2,
+            evaluateColors: ['#99A9BF', '#F7BA2A', '#FF9900'],
+            orderInfo: {
+                item: []
+            }
+        },
+        methods: {
+            handleClick(tab) {
+                this.activeName = tab.name
+                // 当点击的 tab 为商品时，我们需要把商品信息加载出来
+                if (tab.name === 'product') {
+                    this.loadProductInfo();
+                }
+            },
+            loadProductInfo() {
+                axios.get('http://localhost:8080/sell/buyer/product/list')
+                    .then(function (response) {
+                        vue.productInfo = response.data.data
+                    })
+            }
+        },
+        mounted: function () {
+            this.loadProductInfo();
+        },
+    })
+</script>
+</html>
